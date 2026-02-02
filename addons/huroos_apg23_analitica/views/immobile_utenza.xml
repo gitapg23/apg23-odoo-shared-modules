@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="immobile_utenza_form_inherit" model="ir.ui.view">
+            <field name="name">immobile_utenza_form_inherit</field>
+            <field name="model">immobile.utenza</field>
+            <field name="inherit_id" ref="huroos_apg23.immobile_utenza_form_view"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='apg_id']" position="after">
+                    <field name="analytic_account_id" string="Conto Analitico"/>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

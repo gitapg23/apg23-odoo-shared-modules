@@ -1,0 +1,12 @@
+
+
+# Translation for field labels
+#. module: huroos_apg23_analitica
+#: model:ir.model.fields,field_description:huroos_apg23_analitica.field_analytic_data_import__invoice_id
+msgid "Invoice"
+msgstr "Registrazione Contabile"
+
+#. module: huroos_apg23_analitica
+#: model:ir.model.fields,field_description:huroos_apg23_analitica.field_analytic_data_import__invoice_line_id
+msgid "Invoice Line"
+msgstr "Movimento Contabile"

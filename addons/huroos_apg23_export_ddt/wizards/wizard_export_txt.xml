@@ -1,0 +1,20 @@
+<odoo>
+    <record id="wizard_export_txt" model="ir.ui.view">
+        <field name="name">wizard_export_txt</field>
+        <field name="model">wizard.export.txt</field>
+        <field name="arch" type="xml">
+            <form string="File TXT">
+                <group>
+                    <group>
+                        <field name="file_name" invisible="1"/>
+                        <field name="file_data" filename="file_name" readonly="1"/>
+                    </group>
+                </group>
+                <footer>
+                    <button string="Invia il file" name="send_file_ftp" type="object" class="btn-primary"/>
+                    <button special="cancel" string="Chiudere"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

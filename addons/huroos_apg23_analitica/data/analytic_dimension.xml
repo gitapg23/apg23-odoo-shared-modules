@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="analytic_plan_automezzi" model="account.analytic.plan">
+            <field name="name">AUTOMEZZI</field>
+        </record>
+        <record id="analytic_plan_strutture" model="account.analytic.plan">
+            <field name="name">STRUTTURE</field>
+        </record>
+        <record id="analytic_plan_progetti" model="account.analytic.plan">
+            <field name="name">PROGETTI</field>
+        </record>
+        <record id="analytic_plan_raccolte_fondi" model="account.analytic.plan">
+            <field name="name">RACCOLTE FONDI</field>
+        </record>
+
+        <record id="analytic_plan_ambiti_intervento" model="account.analytic.plan">
+            <field name="name">AMBITI DI INTERVENTO</field>
+        </record>
+        <record id="analytic_plan_settori" model="account.analytic.plan">
+            <field name="name">SETTORI</field>
+        </record>
+        <record id="analytic_plan_attivita_specifiche" model="account.analytic.plan">
+            <field name="name">ATTIVITA' SPECIFICHE</field>
+        </record>
+        <record id="analytic_plan_immobili" model="account.analytic.plan">
+            <field name="name">IMMOBILI</field>
+        </record>
+        <record id="analytic_plan_utenze" model="account.analytic.plan">
+            <field name="name">UTENZE</field>
+        </record>
+
+        <record id="ir_cron_dkv_import" model="ir.cron">
+            <field name="name">DKV Import Transactions and Passages</field>
+            <field name="model_id" ref="model_analytic_data_import"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_import_dkv_data()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="active">False</field>
+        </record>
+
+    </data>
+</odoo>

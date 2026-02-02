@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="codice_immobile_form_inherit" model="ir.ui.view">
+            <field name="name">codice_immobile_form_inherit</field>
+            <field name="model">immobile.immobile.codice</field>
+            <field name="inherit_id" ref="huroos_apg23.codice_immobile_form_view"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='immobile_ids']" position="after">
+                    <field name="analytic_account_id" string="Conto Analitico"/>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

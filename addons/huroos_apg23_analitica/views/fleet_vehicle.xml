@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="fleet_vehicle_form_inherit" model="ir.ui.view">
+            <field name="name">fleet_vehicle_form_inherit</field>
+            <field name="model">fleet.vehicle</field>
+            <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='tag_ids']" position="after">
+                    <br/>
+                    <label for="analytic_account_id" string="Conto Analitico"/>
+                    <field name="analytic_account_id"/>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

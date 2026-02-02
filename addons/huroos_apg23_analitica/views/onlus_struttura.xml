@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="onlus_struttura_form_inherit" model="ir.ui.view">
+            <field name="name">onlus_struttura_form_inherit</field>
+            <field name="model">onlus.struttura</field>
+            <field name="inherit_id" ref="huroos_apg23.onlus_struttura_form_view"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='date_open']" position="before">
+                    <field name="analytic_account_id" string="Conto Analitico"/>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

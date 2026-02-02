@@ -1,0 +1,135 @@
+<odoo>
+  <data>
+
+    <!-- === VISTA SEARCH: Sector === -->
+    <record id="view_sector_sector_search" model="ir.ui.view">
+      <field name="name">sector.sector.search</field>
+      <field name="model">sector.sector</field>
+      <field name="arch" type="xml">
+        <search>
+          <field name="name"/>
+          <field name="id_settore"/>
+          <field name="analytic_account_id"/>
+          <field name="company_id"/>
+        </search>
+      </field>
+    </record>
+
+    <!-- === VISTA TREE: Sector === -->
+    <record id="view_sector_sector_tree" model="ir.ui.view">
+      <field name="name">sector.sector.tree</field>
+      <field name="model">sector.sector</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="id_settore"/>
+          <field name="analytic_account_id"/>
+          <field name="utenza_ids" widget="many2many_tags" optional="hide"/>
+          <field name="company_id"/>
+        </tree>
+      </field>
+    </record>
+
+    <!-- === VISTA FORM: Sector === -->
+    <record id="view_sector_sector_form" model="ir.ui.view">
+      <field name="name">sector.sector.form</field>
+      <field name="model">sector.sector</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <field name="name"/>
+              <field name="id_settore"/>
+              <field name="descrizione_settore"/>
+              <field name="analytic_account_id"/>
+              <field name="utenza_ids" widget="many2many_tags"/>
+              <field name="company_id"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- === ACTION Sector === -->
+    <record id="action_sector_sector" model="ir.actions.act_window">
+      <field name="name">Settori</field>
+      <field name="res_model">sector.sector</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- === MENU Sector === -->
+    <menuitem id="menu_sector_sector"
+              name="Settori"
+              parent="analytica_main_menu"
+              action="action_sector_sector"
+              groups="account.group_account_manager"/>
+
+    <!-- === VISTA SEARCH: Specific Activity === -->
+    <record id="view_specific_activity_search" model="ir.ui.view">
+      <field name="name">specific.activity.search</field>
+      <field name="model">specific.activity</field>
+      <field name="arch" type="xml">
+        <search>
+          <field name="name"/>
+          <field name="id_attivita"/>
+          <field name="analytic_account_id"/>
+          <field name="company_id"/>
+        </search>
+      </field>
+    </record>
+
+    <!-- === VISTA TREE: Specific Activity === -->
+    <record id="view_specific_activity_tree" model="ir.ui.view">
+      <field name="name">specific.activity.tree</field>
+      <field name="model">specific.activity</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="id_attivita"/>
+          <field name="data_inizio_commessa"/>
+          <field name="data_fine_commessa"/>
+          <field name="analytic_account_id"/>
+          <field name="utenza_ids" widget="many2many_tags" optional="hide"/>
+          <field name="company_id"/>
+        </tree>
+      </field>
+    </record>
+
+    <!-- === VISTA FORM: Specific Activity === -->
+    <record id="view_specific_activity_form" model="ir.ui.view">
+      <field name="name">specific.activity.form</field>
+      <field name="model">specific.activity</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <field name="name"/>
+              <field name="id_attivita"/>
+              <field name="descrizione_attivita"/>
+              <field name="data_inizio_commessa"/>
+              <field name="data_fine_commessa"/>
+              <field name="analytic_account_id"/>
+              <field name="utenza_ids" widget="many2many_tags"/>
+              <field name="company_id"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- === ACTION Specific Activity === -->
+    <record id="action_specific_activity" model="ir.actions.act_window">
+      <field name="name">Attività Specifiche</field>
+      <field name="res_model">specific.activity</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- === MENU Specific Activity === -->
+    <menuitem id="menu_specific_activity"
+              name="Attività Specifiche"
+              parent="analytica_main_menu"
+              action="action_specific_activity"
+              groups="account.group_account_manager"/>
+
+  </data>
+</odoo>

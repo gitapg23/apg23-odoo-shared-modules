@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="structure_zone_form_inherit" model="ir.ui.view">
+            <field name="name">structure_zone_form_inherit</field>
+            <field name="model">structure.zone</field>
+            <field name="inherit_id" ref="huroos_apg23.structure_zone_tree_view"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="analytic_account_id" string="Conto Analitico"/>
+                    <field name="company_id" string="Azienda" />
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_wizard_export_txt,wizard_export_txt,model_wizard_export_txt,base.group_user,1,1,1,1
+access_huroos_delivery_note_txt,huroos_delivery_note_txt,model_huroos_delivery_note_txt,base.group_user,1,1,1,1

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+
+      <menuitem name="Analitica"
+                  id="analytica_main_menu"
+                  groups="account.group_account_manager"
+                  web_icon="huroos_apg23_analitica,static/description/analitica.png" sequence="20"/>
+
+
+    </data>
+</odoo>

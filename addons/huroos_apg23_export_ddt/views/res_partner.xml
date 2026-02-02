@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="res_partner_form_inherit" model="ir.ui.view">
+            <field name="name">res_partner_form_inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="huroos_ddt.res_partner_form_inherit"/>
+            <field name="arch" type="xml">
+                <field name="ddt_type_id" position="after">
+                    <field name="export_ddt_info"/>
+                </field>
+                <field name="vat" position="after">
+                    <field name="installation_code"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>
