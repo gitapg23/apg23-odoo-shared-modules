@@ -13,7 +13,7 @@ class AccountMoveLinesAPIController(http.Controller):
         methods=['GET'],
         csrf=False
     )
-    def get_account_move_lines(self, date_from=None, date_to=None, limit=None, offset=None, **kwargs):
+    def get_account_move_lines(self, date_from=None, date_to=None, limit=None, offset=None, write_date_from=None, **kwargs):
         """
         API endpoint to retrieve account.move.line records
 
@@ -22,6 +22,8 @@ class AccountMoveLinesAPIController(http.Controller):
             - date_to (optional): End date in YYYY-MM-DD format
             - limit (optional): Number of records per page (default: 500)
             - offset (optional): Pagination offset (default: 0)
+            - write_date_from (optional): Filter records with write_date >= this value
+              Format: 'YYYY-MM-DD HH:MM:SS' (for incremental sync)
 
         Returns:
             JSON object with:
@@ -32,6 +34,7 @@ class AccountMoveLinesAPIController(http.Controller):
 
         Note:
             Records are automatically filtered for company IDs 6 and 7.
+            Records are ordered by write_date ASC, id ASC.
         """
 
         # Validate and parse date parameters
@@ -93,8 +96,22 @@ class AccountMoveLinesAPIController(http.Controller):
                 headers=[('Content-Type', 'application/json')]
             )
 
+        # Validate write_date_from parameter
+        if write_date_from:
+            try:
+                datetime.strptime(write_date_from, '%Y-%m-%d %H:%M:%S')
+            except ValueError:
+                return request.make_response(
+                    json.dumps({'error': 'Il parametro "write_date_from" deve essere nel formato "YYYY-MM-DD HH:MM:SS".'}, ensure_ascii=False),
+                    headers=[('Content-Type', 'application/json')]
+                )
+
         # Build domain filter
         domain = [('parent_state', '=', 'posted')]
+
+        # Add write_date filter for incremental sync
+        if write_date_from:
+            domain.append(('write_date', '>=', write_date_from))
 
         # Add company filter (fixed to IDs 6 and 7)
         domain.append(('company_id', 'in', company_id_list))
@@ -123,11 +140,11 @@ class AccountMoveLinesAPIController(http.Controller):
                     headers=[('Content-Type', 'application/json; charset=utf-8')]
                 )
 
-            # Get paginated records ordered by date descending (most recent first)
+            # Get paginated records ordered by write_date and id ascending
             lines = request.env['account.move.line'].sudo().search_read(
                 domain,
                 fields=None,  # Return all fields
-                order='date desc',
+                order='write_date asc, id asc',
                 limit=page_limit,
                 offset=page_offset
             )

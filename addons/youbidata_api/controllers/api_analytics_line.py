@@ -13,7 +13,7 @@ class AnalyticsLineAPIController(http.Controller):
         methods=['GET'],
         csrf=False
     )
-    def get_analytics_lines(self, plan_ids=None, date_from=None, date_to=None, limit=None, offset=None, **kwargs):
+    def get_analytics_lines(self, plan_ids=None, date_from=None, date_to=None, limit=None, offset=None, write_date_from=None, **kwargs):
         """
         API endpoint to retrieve account.analytic.line records filtered by analytic account IDs.
 
@@ -24,6 +24,8 @@ class AnalyticsLineAPIController(http.Controller):
             - date_to (optional): End date in YYYY-MM-DD format
             - limit (optional): Number of records per page (default: 500)
             - offset (optional): Pagination offset (default: 0)
+            - write_date_from (optional): Filter records with write_date >= this value
+              Format: 'YYYY-MM-DD HH:MM:SS' (for incremental sync)
 
         Returns:
             JSON object with:
@@ -31,6 +33,9 @@ class AnalyticsLineAPIController(http.Controller):
             - limit: Applied limit
             - offset: Applied offset
             - records: List of account.analytic.line records
+
+        Note:
+            Records are ordered by write_date ASC, id ASC.
         """
 
         # 1. Validate required parameter: plan_ids
@@ -118,8 +123,22 @@ class AnalyticsLineAPIController(http.Controller):
                 headers=[('Content-Type', 'application/json')]
             )
 
+        # Validate write_date_from parameter
+        if write_date_from:
+            try:
+                datetime.strptime(write_date_from, '%Y-%m-%d %H:%M:%S')
+            except ValueError:
+                return request.make_response(
+                    json.dumps({'error': 'Il parametro "write_date_from" deve essere nel formato "YYYY-MM-DD HH:MM:SS".'}, ensure_ascii=False),
+                    headers=[('Content-Type', 'application/json')]
+                )
+
         # 5. Build domain filter
         domain = [('x_plan4_id', 'in', plan_id_list)]
+
+        # Add write_date filter for incremental sync
+        if write_date_from:
+            domain.append(('write_date', '>=', write_date_from))
 
         # Add date filters if provided
         if dt_from:
@@ -145,11 +164,11 @@ class AnalyticsLineAPIController(http.Controller):
                     headers=[('Content-Type', 'application/json; charset=utf-8')]
                 )
 
-            # Get paginated records ordered by date descending (most recent first)
+            # Get paginated records ordered by write_date and id ascending
             lines = request.env['account.analytic.line'].sudo().search_read(
                 domain,
                 fields=None,  # Return all fields
-                order='date desc',
+                order='write_date asc, id asc',
                 limit=page_limit,
                 offset=page_offset
             )

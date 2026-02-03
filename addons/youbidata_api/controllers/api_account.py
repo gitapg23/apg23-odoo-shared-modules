@@ -1,5 +1,6 @@
 from odoo import http
 from odoo.http import request
+from datetime import datetime
 import json
 
 
@@ -12,13 +13,15 @@ class AccountAPIController(http.Controller):
         methods=['GET'],
         csrf=False
     )
-    def get_account(self, limit=None, offset=None, **kwargs):
+    def get_account(self, limit=None, offset=None, write_date_from=None, **kwargs):
         """
         API endpoint to retrieve account.account records
 
         Parameters:
             - limit (optional): Number of records per page (default: 500)
             - offset (optional): Pagination offset (default: 0)
+            - write_date_from (optional): Filter records with write_date >= this value
+              Format: 'YYYY-MM-DD HH:MM:SS' (for incremental sync)
 
         Returns:
             JSON object with:
@@ -29,6 +32,7 @@ class AccountAPIController(http.Controller):
 
         Note:
             Records are automatically filtered for company IDs 6 and 7.
+            Records are ordered by write_date ASC, id ASC.
         """
 
         # Fixed company IDs filter
@@ -61,8 +65,22 @@ class AccountAPIController(http.Controller):
                 headers=[('Content-Type', 'application/json')]
             )
 
+        # Validate write_date_from parameter
+        if write_date_from:
+            try:
+                datetime.strptime(write_date_from, '%Y-%m-%d %H:%M:%S')
+            except ValueError:
+                return request.make_response(
+                    json.dumps({'error': 'Il parametro "write_date_from" deve essere nel formato "YYYY-MM-DD HH:MM:SS".'}, ensure_ascii=False),
+                    headers=[('Content-Type', 'application/json')]
+                )
+
         # Build domain filter
         domain = [('deprecated', '=', False)]
+
+        # Add write_date filter for incremental sync
+        if write_date_from:
+            domain.append(('write_date', '>=', write_date_from))
 
         # Add company filter (fixed to IDs 6 and 7)
         domain.append(('company_id', 'in', company_id_list))
@@ -85,11 +103,11 @@ class AccountAPIController(http.Controller):
                     headers=[('Content-Type', 'application/json; charset=utf-8')]
                 )
 
-            # Get paginated records ordered by code ascending
+            # Get paginated records ordered by write_date and id ascending
             lines = request.env['account.account'].sudo().search_read(
                 domain,
                 fields=None,  # Return all fields
-                order='code asc',
+                order='write_date asc, id asc',
                 limit=page_limit,
                 offset=page_offset
             )
