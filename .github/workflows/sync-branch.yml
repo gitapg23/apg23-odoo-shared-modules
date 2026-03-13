@@ -10,16 +10,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout repository sorgente
+      # 1️⃣ Checkout repository sorgente (main)
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.DEPLOY_TOKEN }}
-          fetch-depth: 0 
+          fetch-depth: 0
 
-      - name: List files in addons
+      - name: List files in addons on main
         run: |
-          echo "Current commit:"
+          echo "Current commit on main:"
           git rev-parse HEAD
           echo "Listing addons folder:"
           ls -R addons/
@@ -36,46 +36,33 @@ jobs:
           git remote add target https://x-access-token:${{ secrets.DEPLOY_TOKEN }}@github.com/airsrl/apg23.git
           git fetch target
 
-      # 4️⃣ Checkout del branch target locale
+      # 4️⃣ Checkout del branch target
       - name: Checkout target branch
         run: |
           git checkout -B staging_apg23_2 target/staging_apg23_2 || git checkout -B staging_apg23_2
 
-      - name: Debug target branch
+      # 5️⃣ Prendi i file da main
+      - name: Checkout addons from main
         run: |
-          echo "Current commit in staging_apg23_2:"
-          git rev-parse HEAD
-          echo "Listing all files:"
-          git ls-tree -r HEAD --name-only
+          git fetch origin main
+          git checkout origin/main -- addons/
 
-      - name: List files in working directory
-        run: |
-          echo "Listing files in root:"
-          ls -R
-      
-        #copia solo i file comuni di addons/ in apg23/
+      # 6️⃣ Copia tutto da addons nella root
       - name: Copy addons content to root
         run: |
-          # Aggiorna i file/
-          rsync -av  addons/ ./
-          
-      - name: List nuovi file in root
-        run: |
-          echo "Listing new  files in root:"
-          ls -R
-      - name: Check working directory
-        run: pwd
+          rsync -av addons/ ./
 
-      - name: Check files physically
+      # 7️⃣ Debug: lista file fisici
+      - name: List files physically in root
         run: |
           echo "Listing all files in working directory:"
           find . -type f
-      
-      - name: Git status
-        run: git status
-      
 
-      # 6️⃣ Commit e push solo se ci sono modifiche
+      # 8️⃣ Debug: git status
+      - name: Git status before commit
+        run: git status
+
+      # 9️⃣ Commit e push solo se ci sono modifiche
       - name: Commit and push
         run: |
           git add .
