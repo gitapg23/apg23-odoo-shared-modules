@@ -22,7 +22,7 @@ jobs:
 
       - name: Add remote for target repository
         run: |
-          git remote add target https://x-access-token:${{ secrets.TARGET_TOKEN }}@github.com/airsrl/apg23.git
+          git remote add target https://x-access-token:${{ secrets.DEPLOY_TOKEN }}@github.com/airsrl/apg23.git
           git fetch target
 
       - name: Merge and push to external repository
