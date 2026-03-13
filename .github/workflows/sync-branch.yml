@@ -57,19 +57,12 @@ jobs:
       - name: Copy addons content to apg23/
         run: |
           # Aggiorna solo i file che già esistono in apg23/
-          rsync -av  addons/ apg23/
-      - name: List files in apg23
-        run: |
-          ls -R apg23/
-
-      - name: List files in addons
-        run: |
-          ls -R addons/
+          rsync -av  addons/ ./
       
 
       # 6️⃣ Commit e push solo se ci sono modifiche
       - name: Commit and push
         run: |
-          git add apg23/
+          git add .
           git commit -m "Sync addons content from main" || echo "No changes to commit"
           git push target staging_apg23_2
