@@ -65,6 +65,14 @@ jobs:
           ls -R
       - name: Check working directory
         run: pwd
+
+      - name: Check files physically
+        run: |
+          echo "Listing all files in working directory:"
+          find . -type f
+      
+      - name: Git status
+        run: git status
       
 
       # 6️⃣ Commit e push solo se ci sono modifiche
