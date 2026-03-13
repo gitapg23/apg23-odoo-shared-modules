@@ -27,5 +27,5 @@ jobs:
         run: |
           git fetch origin
           git checkout staging_apg23_2
-          git merge origin/main --no-ff --allow-unrelated-histories -m "Sync main into staging_apg23_2"
+          git merge origin/main --no-ff --allow-unrelated-histories -X theirs -m "Sync main into staging_apg23_2"
           git push origin staging_apg23_2
