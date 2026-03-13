@@ -1,5 +1,4 @@
-
-name: Sync Branch
+name: Sync Branch to External Repo
 
 on:
   push:
@@ -21,11 +20,18 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Merge main into staging_apg23_2
-        env:
-          TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+      - name: Add remote for target repository
         run: |
-          git fetch origin
-          git checkout staging_apg23_2
+          git remote add target https://x-access-token:${{ secrets.TARGET_TOKEN }}@github.com/airsrl/apg23.git
+          git fetch target
+
+      - name: Merge and push to external repository
+        run: |
+          # Crea/checkout del branch target locale
+          git checkout -B staging_apg23_2 target/staging_apg23_2 || git checkout -B staging_apg23_2
+
+          # Merge dei commit da main, prendi sempre i cambi di main se ci sono conflitti
           git merge origin/main --no-ff --allow-unrelated-histories -X theirs -m "Sync main into staging_apg23_2"
-          git push origin staging_apg23_2
+
+          # Push sul branch dell'altro repository
+          git push target staging_apg23_2 --force
