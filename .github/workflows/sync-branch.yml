@@ -54,10 +54,15 @@ jobs:
           ls -R
       
         #copia solo i file comuni di addons/ in apg23/
-      - name: Copy addons content to apg23/
+      - name: Copy addons content to root
         run: |
-          # Aggiorna solo i file che già esistono in apg23/
+          # Aggiorna i file/
           rsync -av  addons/ ./
+          
+      - name: List nuovi file in root
+        run: |
+          echo "Listing new  files in root:"
+          ls -R
       
 
       # 6️⃣ Commit e push solo se ci sono modifiche
