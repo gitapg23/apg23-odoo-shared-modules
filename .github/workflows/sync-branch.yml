@@ -10,28 +10,37 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Checkout repository sorgente
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.DEPLOY_TOKEN }}
 
+      # 2️⃣ Configura git
       - name: Configure git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
+      # 3️⃣ Aggiungi remote per repository di destinazione
       - name: Add remote for target repository
         run: |
           git remote add target https://x-access-token:${{ secrets.DEPLOY_TOKEN }}@github.com/airsrl/apg23.git
           git fetch target
 
-      - name: Merge and push to external repository
+      # 4️⃣ Checkout del branch target locale
+      - name: Checkout target branch
         run: |
-          # Crea/checkout del branch target locale
           git checkout -B staging_apg23_2 target/staging_apg23_2 || git checkout -B staging_apg23_2
 
-          # Merge dei commit da main, prendi sempre i cambi di main se ci sono conflitti
-          git merge origin/main --no-ff --allow-unrelated-histories -X theirs -m "Sync main into staging_apg23_2"
+      # 5️⃣ Copia solo il contenuto di addons/ nella root
+      - name: Copy addons content to root
+        run: |
+          rsync -av --ignore-existing --existing addons/ ./ 
 
-          # Push sul branch dell'altro repository
+      # 6️⃣ Commit e push
+      - name: Commit and push
+        run: |
+          git add .
+          git commit -m "Sync addons content from main" || echo "No changes to commit"
           git push target staging_apg23_2 --force
