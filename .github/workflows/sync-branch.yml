@@ -41,7 +41,19 @@ jobs:
         run: |
           git checkout -B staging_apg23_2 target/staging_apg23_2 || git checkout -B staging_apg23_2
 
-      # 5️⃣ Copia solo i file comuni di addons/ in apg23/
+      - name: Debug target branch
+        run: |
+          echo "Current commit in staging_apg23_2:"
+          git rev-parse HEAD
+          echo "Listing all files:"
+          git ls-tree -r HEAD --name-only
+
+      - name: List files in working directory
+        run: |
+          echo "Listing files in root:"
+          ls -R
+      
+        #copia solo i file comuni di addons/ in apg23/
       - name: Copy addons content to apg23/
         run: |
           # Aggiorna solo i file che già esistono in apg23/
