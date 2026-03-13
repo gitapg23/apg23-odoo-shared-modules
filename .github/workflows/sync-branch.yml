@@ -17,6 +17,13 @@ jobs:
           token: ${{ secrets.DEPLOY_TOKEN }}
           fetch-depth: 0 
 
+      - name: List files in addons
+        run: |
+          echo "Current commit:"
+          git rev-parse HEAD
+          echo "Listing addons folder:"
+          ls -R addons/
+
       # 2️⃣ Configura git
       - name: Configure git
         run: |
