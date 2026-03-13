@@ -42,27 +42,32 @@ jobs:
           git checkout -B staging_apg23_2 target/staging_apg23_2 || git checkout -B staging_apg23_2
 
       # 5️⃣ Prendi i file da main
+      # 5️⃣ Checkout addons content from main
       - name: Checkout addons from main
         run: |
           git fetch origin main
           git checkout origin/main -- addons/
-
-      # 6️⃣ Copia tutto da addons nella root
+      
+      # 6️⃣ Copia tutto il contenuto di addons/ nella root
       - name: Copy addons content to root
         run: |
-          rsync -av addons/ ./
-
-      # 7️⃣ Debug: lista file fisici
-      - name: List files physically in root
+          # copia tutto il contenuto di addons/ nella root, ignorando la cartella addons stessa
+          shopt -s dotglob  # include file nascosti
+          cp -r addons/* ./  
+      
+      # 7️⃣ Debug: lista file fisici nella root
+      - name: List files in root after copy
         run: |
-          echo "Listing all files in working directory:"
-          find . -type f
-
-      # 8️⃣ Debug: git status
-      - name: Git status before commit
+          echo "Files in root:"
+          find . -maxdepth 1 -type f
+          echo "Folders in root:"
+          find . -maxdepth 1 -type d
+      
+      # 8️⃣ Git status
+      - name: Git status
         run: git status
-
-      # 9️⃣ Commit e push solo se ci sono modifiche
+      
+      # 9️⃣ Commit e push
       - name: Commit and push
         run: |
           git add .
