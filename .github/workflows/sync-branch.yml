@@ -4,7 +4,7 @@ name: Sync Branch
 on:
   push:
     branches:
-      - develop   # branch di partenza
+      - main   # branch di partenza
 
 jobs:
   sync:
@@ -13,15 +13,19 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.DEPLOY_TOKEN }}
 
       - name: Configure git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Push to staging_apg23_2
+      - name: Merge main into staging_apg23_2
         env:
           TOKEN: ${{ secrets.DEPLOY_TOKEN }}
         run: |
           git fetch origin
-          git push https://$TOKEN@github.com/${{ github.repository }} develop:staging_apg23_2
+          git checkout staging_apg23_2
+          git merge origin/main --no-ff --allow-unrelated-histories -m "Sync main into staging_apg23_2"
+          git push origin staging_apg23_2
