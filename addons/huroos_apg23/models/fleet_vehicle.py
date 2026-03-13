@@ -3,6 +3,7 @@ from odoo import fields, models, api, Command
 import datetime
 # TEST DA MATTEO 2
 #test dodiane
+#aggiungo un'altra modifica
 LIST_FUEL_TYPE = [('MISCELA', 'Miscela'),
                   ('BENZINA VERDE', 'Benzina Verde'),
                   ('G.P.L.', 'G.P.L'),
