@@ -1,7 +1,7 @@
 import json
 from odoo import fields, models, api, Command
 import datetime
-# solo test commit dodiane
+# solo test commit dodiane new
 LIST_FUEL_TYPE = [('MISCELA', 'Miscela'),
                   ('BENZINA VERDE', 'Benzina Verde'),
                   ('G.P.L.', 'G.P.L'),
