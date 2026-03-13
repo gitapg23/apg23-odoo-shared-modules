@@ -1,1 +1,27 @@
 
+name: Sync Branch
+
+on:
+  push:
+    branches:
+      - develop   # branch di partenza
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Push to staging_apg23_2
+        env:
+          TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+        run: |
+          git fetch origin
+          git push https://$TOKEN@github.com/${{ github.repository }} develop:staging_apg23_2
