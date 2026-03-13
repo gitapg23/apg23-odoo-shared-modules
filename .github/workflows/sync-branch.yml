@@ -34,14 +34,14 @@ jobs:
           git checkout -B staging_apg23_2 target/staging_apg23_2 || git checkout -B staging_apg23_2
 
       # 5️⃣ Copia solo i file comuni di addons/ in apg23/
-      - name: Copy addons content to /src/user/
+      - name: Copy addons content to apg23/
         run: |
           # Aggiorna solo i file che già esistono in apg23/
-          rsync -av --existing addons/ /src/user/
+          rsync -av  addons/ apg23/
 
       # 6️⃣ Commit e push solo se ci sono modifiche
       - name: Commit and push
         run: |
-          git add /src/user/
+          git add apg23/
           git commit -m "Sync addons content from main" || echo "No changes to commit"
           git push target staging_apg23_2
